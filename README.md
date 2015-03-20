@@ -1,5 +1,6 @@
-PhonegapPlugin
+Cordova Plugin: Base64-Encode-Decode-Audio
 ==============
 
-Plugin for phonegap 3
-forked from dpfauwadel/PhonegapPlugin
+A cordova plugin for Encode/Decode Base64 audio for Android.
+
+Forked from dpfauwadel/PhonegapPlugin

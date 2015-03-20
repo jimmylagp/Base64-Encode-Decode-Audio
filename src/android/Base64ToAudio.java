@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Environment;
+import android.util.Base64;
 
 public class Base64ToAudio extends CordovaPlugin{
 
@@ -32,8 +33,23 @@ public class Base64ToAudio extends CordovaPlugin{
             try {
                 JSONObject parameters = args.getJSONObject(0);
                 if (parameters != null) {
-                    String base64String = Base64.encode(parameters.getString("filePath"));
-                    callbackContext.success(base64String);
+                    String encodedfile = null;
+                    try {
+                        File file = parameters.getString("filePath");
+                        FileInputStream fileInputStreamReader = new FileInputStream(file);
+                        byte[] bytes = new byte[(int)file.length()];
+                        fileInputStreamReader.read(bytes);
+                        String encodedfile = Base64.encodeToString(data, Base64.DEFAULT);
+                        
+                        callbackContext.success(encodedfile);
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -96,7 +112,7 @@ public class Base64ToAudio extends CordovaPlugin{
             }
 
             //Decode Base64 back to Binary format
-            byte[] decodedBytes = Base64.decode(b64String);
+            byte[] decodedBytes = Base64.decode(b64String, Base64.DEFAULT);
 
             //Save Binary file to phone
             file.createNewFile();
