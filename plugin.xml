@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+           id="org.voiceapp.convAudio"
+      version="0.1.1">
+    <name>Base64ToAudio</name>
+    <description>Sample PhoneGap Base64ToAudio Plugin</description>
+    <license>MIT</license>
+    <keywords>phonegap/cordova,Base64ToAudio</keywords>
+ 
+ 
+    <js-module src="www/Base64ToAudio.js" name="Base64ToAudio">
+        <clobbers target="window.Base64ToAudio" />
+    </js-module>
+ 
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Base64ToAudio">
+                <param name="android-package" value="org.voiceapp.convAudio.Base64ToAudio"/>
+            </feature>
+        </config-file>
+ 
+        <source-file src="src/android/Base64ToAudio.java" target-dir="src/org/voiceapp/convAudio" />
+        <source-file src="src/android/Base64.java" target-dir="src/org/voiceapp/convAudio" />
+     </platform>          
+</plugin>
