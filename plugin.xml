@@ -22,6 +22,5 @@
         </config-file>
  
         <source-file src="src/android/Base64ToAudio.java" target-dir="src/org/voiceapp/convAudio" />
-        <source-file src="src/android/Base64.java" target-dir="src/org/voiceapp/convAudio" />
      </platform>          
 </plugin>

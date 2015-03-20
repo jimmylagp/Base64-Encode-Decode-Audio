@@ -1,9 +1,6 @@
 package org.voiceapp.convAudio;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -35,11 +32,11 @@ public class Base64ToAudio extends CordovaPlugin{
                 if (parameters != null) {
                     String encodedfile = null;
                     try {
-                        File file = parameters.getString("filePath");
+                        File file = new File(parameters.getString("filePath"));
                         FileInputStream fileInputStreamReader = new FileInputStream(file);
                         byte[] bytes = new byte[(int)file.length()];
                         fileInputStreamReader.read(bytes);
-                        String encodedfile = Base64.encodeToString(data, Base64.DEFAULT);
+                        encodedfile = Base64.encodeToString(bytes, Base64.DEFAULT);
                         
                         callbackContext.success(encodedfile);
                     } catch (FileNotFoundException e) {
