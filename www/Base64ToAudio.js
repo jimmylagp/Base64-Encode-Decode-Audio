@@ -5,7 +5,7 @@ var exec = require("cordova/exec");
 });*/
 
 var Base64ToAudio = {
-    saveAudio: function (b64String, successCallback, failCallback)
+    saveAudio: function (conf, successCallback, failCallback)
     {
         function success(args) {
             if (typeof successCallback === 'function')
@@ -22,7 +22,7 @@ var Base64ToAudio = {
             function (args) { fail(args); },
             'Base64ToAudio',
             'saveAudio',
-            [b64String]);
+            [conf]);
     },
 
     readAudio: function(filePath, successCallback, failCallback) {

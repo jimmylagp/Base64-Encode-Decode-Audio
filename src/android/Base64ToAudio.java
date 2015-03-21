@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.os.Environment;
 import android.util.Base64;
+import android.app.Activity;
 
 public class Base64ToAudio extends CordovaPlugin{
 
@@ -17,14 +18,36 @@ public class Base64ToAudio extends CordovaPlugin{
 
     }
 
+    @Override
 	public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		
+
 		if("saveAudio".equals(action)){
+
+            JSONObject params = args.getJSONObject(0);
+        
+            String b64String = params.getString("b64string");
+            
+            String filename = params.has("filename")
+                    ? params.getString("filename")
+                    : System.currentTimeMillis() + ".mp3";
+
+            String folder = params.has("folder")
+                    ? params.getString("folder")
+                    //: Environment.getExternalStorageDirectory() + "/Pictures";
+                    : Environment.getExternalStorageDirectory() + "/";
+
+            Boolean overwrite = params.has("overwrite") 
+                    ? params.getBoolean("overwrite") 
+                    : false;
+
 			try {
-				return open(args, callbackContext);
-	        } catch (JSONException e) {
-	            e.printStackTrace();
-	            return false;
+				saveAudio(b64String, filename, folder, overwrite);
+                
+                callbackContext.success();
+	        } catch (InterruptedException e) {
+	            System.err.println("Exception: " + e.getMessage());
+                callbackContext.error(e.getMessage());
+                return false;
 	        }
 		}else if("readAudio".equals(action)){
             try {
@@ -40,57 +63,25 @@ public class Base64ToAudio extends CordovaPlugin{
                         
                         callbackContext.success(encodedfile);
                     } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                       System.err.println("Exception: " + e.getMessage());
+                        callbackContext.error(e.getMessage());
+                        return false;
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        System.err.println("Exception: " + e.getMessage());
+                        callbackContext.error(e.getMessage());
+                        return false;
                     }
 
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                System.err.println("Exception: " + e.getMessage());
+                callbackContext.error(e.getMessage());
                 return false;
             }
         }
 		
 		return false;
 	}
-	
-    private boolean open (JSONArray args, CallbackContext ctx) throws JSONException {
-    	JSONObject params = args.getJSONObject(1);
-    	
-        String b64String = "";
-        if (b64String.startsWith("data:audio")) {
-            b64String = args.getString(0).substring(21);
-        } else {
-            b64String = args.getString(0);
-        }
-    	//Optional parameter
-        if (params.has("b64string"))
-        	b64String = params.getString("b64string");
-        
-        String filename = params.has("filename")
-                ? params.getString("filename")
-                : System.currentTimeMillis() + ".mp3";
-
-        String folder = params.has("folder")
-                ? params.getString("folder")
-                //: Environment.getExternalStorageDirectory() + "/Pictures";
-                : Environment.getExternalStorageDirectory() + "/";
-
-        Boolean overwrite = params.has("overwrite") 
-                ? params.getBoolean("overwrite") 
-                : false;
-                
-        try {
-			return saveAudio(b64String, filename, folder, overwrite);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return overwrite;
-    }
 	
 	private boolean saveAudio(String b64String, String fileName, String dirName, Boolean overwrite) throws InterruptedException, JSONException {
 
@@ -101,6 +92,7 @@ public class Base64ToAudio extends CordovaPlugin{
             if (!dir.exists()) {
                 dir.mkdirs();
             }
+
             File file = new File(dirName, fileName);
 
             //Avoid overwriting a file
@@ -120,8 +112,10 @@ public class Base64ToAudio extends CordovaPlugin{
             return true;
             
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return false;
         } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
