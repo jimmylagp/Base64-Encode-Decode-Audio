@@ -1,6 +1,5 @@
-Cordova Plugin: Base64-Encode-Decode-Audio
-==============
+# Base64 encode/decode MP3 audio
 
-A cordova plugin for Encode/Decode Base64 audio for Android.
+You can encode and decode Base64 MP3 audio with this plugin for whatever you need on you cordova project.
 
-Forked from dpfauwadel/PhonegapPlugin
+This is a cordova plugin for Android only. Forked from dpfauwadel/PhonegapPlugin
