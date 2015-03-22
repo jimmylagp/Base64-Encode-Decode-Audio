@@ -5,7 +5,7 @@ You can encode and decode Base64 MP3 audio with this plugin for whatever you nee
 
 Usage:
 
-<script>
+```javascript
 	//Encode Audio MP3 to Base64
 	var pathToFile = "/pathToFile/audio.mp3";
 	
@@ -31,6 +31,6 @@ Usage:
 			console.log(error);
 		}
 	);
-</script>
+```
 
 This is a cordova plugin for Android only. Forked from dpfauwadel/PhonegapPlugin
